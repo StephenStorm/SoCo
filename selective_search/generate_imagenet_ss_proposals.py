@@ -13,7 +13,7 @@ import pickle
 import numpy as np
 import PIL.Image as Image
 
-from .selective_search import selective_search
+from selective_search import selective_search
 
 imagenet_root = './imagenet_root'
 imagenet_root_proposals = './imagenet_root_proposals_mp'
@@ -22,13 +22,15 @@ split = 'train'
 scale = 300
 min_size = 100
 
-processes_num = 48
+processes_num = 80
 class_names = sorted(os.listdir(os.path.join(imagenet_root, split)))
 classes_num = len(class_names)
 classes_per_process = classes_num // processes_num + 1
 
 source_path = os.path.join(imagenet_root, split)
 target_path = os.path.join(imagenet_root_proposals, split)
+if not os.path.exists(target_path):
+    os.makedirs(target_path)
 
 
 def process_one_class(process_id, classes_per_process, class_names, source_path, target_path):
@@ -38,9 +40,13 @@ def process_one_class(process_id, classes_per_process, class_names, source_path,
             break
         class_name = class_names[i]
         filenames = sorted(os.listdir(os.path.join(source_path, class_name)))
-        os.makedirs(os.path.join(target_path, class_name))
+        if not os.path.exists(os.path.join(target_path, class_name)) :
+            os.makedirs(os.path.join(target_path, class_name))
         for filename in filenames:
             base_filename = os.path.splitext(filename)[0]
+            cur_img_pro_path = os.path.join(target_path, class_name, base_filename+'.pkl')
+            if os.path.exists(cur_img_pro_path) :
+                continue
             img_path = os.path.join(source_path, class_name, filename)
             img = np.array(Image.open(img_path).convert('RGB'))
 
@@ -51,7 +57,7 @@ def process_one_class(process_id, classes_per_process, class_names, source_path,
             cur_img_proposal['label'] = region_label
             cur_img_proposal['regions'] = regions
 
-            cur_img_pro_path = os.path.join(target_path, class_name, base_filename+'.pkl')
+            # cur_img_pro_path = os.path.join(target_path, class_name, base_filename+'.pkl')
 
             with open(cur_img_pro_path, 'wb') as f:
                 pickle.dump(cur_img_proposal, f)
