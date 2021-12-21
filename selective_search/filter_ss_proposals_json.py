@@ -7,6 +7,9 @@ import json
 from filters import filter_none, filter_ratio, filter_size, filter_ratio_size
 
 
+complete_class_file = '/opt/tiger/minist/SoCo/selective_search/complete_class_names.txt'
+
+
 imagenet_root = './imagenet_root'
 imagenet_root_proposals = './imagenet_root_proposals_mp'
 filter_strategy = 'ratio3size0308'  # 'ratio2', 'ratio3', 'ratio4', 'size01'
@@ -23,7 +26,12 @@ os.makedirs(filtered_proposals, exist_ok=True)
 json_path = os.path.join(filtered_proposals, f'{split}_{filter_strategy}.json')
 source_path = os.path.join(imagenet_root_proposals, split)
 
-class_names = sorted(os.listdir(os.path.join(imagenet_root_proposals, split)))
+
+with open(complete_class_file, 'r') as rf:
+    class_names = rf.readlines()
+class_names = sorted([name.strip() for name in class_names])
+
+# class_names = sorted(os.listdir(os.path.join(imagenet_root_proposals, split)))
 
 no_props_images = []
 

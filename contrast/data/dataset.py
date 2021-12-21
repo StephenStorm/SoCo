@@ -57,6 +57,7 @@ def make_dataset(dir, class_to_idx, extensions):
 
 def make_dataset_with_ann(ann_file, img_prefix, extensions, dataset='ImageNet'):
     images = []
+    # print(ann_file) # /opt/tiger/minist/datasets/imagenet/train_map.txt
 
     with open(ann_file, "r") as f:
         contents = f.readlines()

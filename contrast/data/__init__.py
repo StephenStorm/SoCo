@@ -29,10 +29,10 @@ def get_loader(aug_type, args, two_crop=False, prefix='train', return_coord=Fals
     # dataset
     if args.zip:
         if args.dataset == 'ImageNet':
-            train_ann_file = prefix + f"_{args.split_map}.txt"
+            train_ann_file = prefix + f"_{args.split_map}.txt" # train_map.txt
             train_prefix = prefix + ".zip@/"
             if args.ss_props:
-                train_props_file = prefix + f"_{args.filter_strategy}.json"
+                train_props_file = prefix + f"_{args.filter_strategy}.json" # train_ratio3size0308.json
             elif args.rpn_props:
                 train_props_file = f"rpn_props_nms_{args.nms_threshold}.json"
         elif args.dataset == 'COCO':   # NOTE: for coco, we use same scheme as ImageNet

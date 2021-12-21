@@ -1,0 +1,8 @@
+
+
+train_ann_file = prefix + f"_{args.split_map}.txt"
+train_prefix = prefix + ".zip@/"
+if args.ss_props:
+    train_props_file = prefix + f"_{args.filter_strategy}.json"
+elif args.rpn_props:
+    train_props_file = f"rpn_props_nms_{args.nms_threshold}.json"
