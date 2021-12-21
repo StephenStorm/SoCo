@@ -30,7 +30,7 @@ no_props_images = []
 
 for ci, class_name in enumerate(class_names):
     filenames = sorted(os.listdir(os.path.join(source_path, class_name)))
-    for fi, filename in enumerate(filenames):
+    for fi, filename in enumerate(filenames): # all pkl file in a single class
         base_filename = os.path.splitext(filename)[0]
         cur_img_pro_path = os.path.join(source_path, class_name, filename)
 

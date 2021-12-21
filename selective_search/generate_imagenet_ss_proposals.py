@@ -10,6 +10,8 @@ import multiprocessing as mp
 import os
 import pickle
 
+import shutil
+
 import numpy as np
 import PIL.Image as Image
 
@@ -22,7 +24,7 @@ split = 'train'
 scale = 300
 min_size = 100
 
-processes_num = 80
+processes_num = 60
 class_names = sorted(os.listdir(os.path.join(imagenet_root, split)))
 classes_num = len(class_names)
 classes_per_process = classes_num // processes_num + 1
@@ -40,8 +42,9 @@ def process_one_class(process_id, classes_per_process, class_names, source_path,
             break
         class_name = class_names[i]
         filenames = sorted(os.listdir(os.path.join(source_path, class_name)))
-        if not os.path.exists(os.path.join(target_path, class_name)) :
-            os.makedirs(os.path.join(target_path, class_name))
+        class_dir = os.path.join(target_path, class_name)
+        if not os.path.exists(class_dir) :
+            os.makedirs(class_dir)
         for filename in filenames:
             base_filename = os.path.splitext(filename)[0]
             cur_img_pro_path = os.path.join(target_path, class_name, base_filename+'.pkl')
@@ -62,6 +65,10 @@ def process_one_class(process_id, classes_per_process, class_names, source_path,
             with open(cur_img_pro_path, 'wb') as f:
                 pickle.dump(cur_img_proposal, f)
         print("Process ", process_id, "processed class:", class_name)
+        os.system('hdfs dfs -put {} hdfs://haruna/home/byte_arnold_lq_vc/user/zhanglibin.buaa/datasets/gen_selective_res'.format(class_dir))
+        print('save {} to hdfs'.format(class_dir))
+        # shutil.rmtree(class_dir)
+
 
 
 processes = [mp.Process(target=process_one_class,

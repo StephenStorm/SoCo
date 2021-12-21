@@ -28,10 +28,20 @@ python -m pip install 'git+https://github.com/hologerry/detectron2.git' --upgrad
 pip uninstall pycocotools
 pip install mmcv-full==1.2.4 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.6.0/index.html --upgrade --force-reinstall
 
-git clone https://github.com/hologerry/mmdetection.git
-cd mmdetection
-pip install -r requirements/build.txt --upgrade --force-reinstall
-pip install -v -e . --upgrade --force-reinstall
+# git clone https://github.com/hologerry/mmdetection.git
+# cd mmdetection
+# pip install -r requirements/build.txt --upgrade --force-reinstall
+# pip install -v -e . --upgrade --force-reinstall
 
 
 pip install scikit-image
+
+
+
+# mkdir datasets
+# cd datasets
+# mkdir imagenet
+# cd imagenet
+# hdfs dfs -get hdfs://haruna/home/byte_arnold_lq_vc/user/zhanglibin.buaa/datasets/imagenet-object-localization-challenge.zip
+# unzip imagenet-object-localization-challenge.zip
+# tar -xvf imagenet_object_localization_patched2019.tar.gz
