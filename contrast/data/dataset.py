@@ -118,7 +118,7 @@ class DatasetFolder(data.Dataset):
     def __init__(self, root, loader, extensions, ann_file='', img_prefix='', transform=None, target_transform=None,
                  cache_mode="no", dataset='ImageNet'):
         # image folder mode
-        if ann_file == '':
+        if ann_file == '' or ann_file == None:
             _, class_to_idx = find_classes(root)
             samples = make_dataset(root, class_to_idx, extensions)
         # zip mode
@@ -304,6 +304,8 @@ def pil_loader(path):
     else:
         with open(path, 'rb') as f:
             img = Image.open(f)
+            img.load()
+
     return img.convert('RGB')
 
 
@@ -643,6 +645,13 @@ class ImageFolderImageAsymBboxAwareMultiJitter1(DatasetFolderProps):
 
 
 class ImageFolderImageAsymBboxAwareMultiJitter1Cutout(DatasetFolderProps):
+    '''
+    root = args.data_dir, 
+    ann_file = train_ann_file,  =train_map.txt
+    img_prefix = train_prefix, ="train"
+    train_pros_file = train_props_file, ="train_ratio3size0308.json"
+
+    '''
     def __init__(self, root, ann_file='', img_prefix='', train_props_file='',
                  image_size=0, select_strategy='', select_k=0, weight_strategy='',
                  jitter_prob=0.0, jitter_ratio=0.0,

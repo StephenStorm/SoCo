@@ -22,16 +22,24 @@ from .transform import get_transform
 
 
 def get_loader(aug_type, args, two_crop=False, prefix='train', return_coord=False):
+    '''
+    get_loader(args.aug, args, prefix=train_prefix, return_coord=True)
+    args.aug : "ImageAsymBboxAwareMultiJitter1Cutout"
+    prefix = train
+    return_coord = True
+    
+
+    '''
     transform = get_transform(args, aug_type, args.crop, args.image_size, crop1=args.crop1,
                               cutout_prob=args.cutout_prob, cutout_ratio=args.cutout_ratio,
                               image3_size=args.image3_size, image4_size=args.image4_size)
 
     # dataset
-    if args.zip:
+    if args.zip: # True
         if args.dataset == 'ImageNet':
             train_ann_file = prefix + f"_{args.split_map}.txt" # train_map.txt
             train_prefix = prefix + ".zip@/"
-            if args.ss_props:
+            if args.ss_props: # True
                 train_props_file = prefix + f"_{args.filter_strategy}.json" # train_ratio3size0308.json
             elif args.rpn_props:
                 train_props_file = f"rpn_props_nms_{args.nms_threshold}.json"

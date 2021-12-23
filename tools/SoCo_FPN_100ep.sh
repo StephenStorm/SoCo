@@ -7,7 +7,7 @@ warmup=${1:-10}
 epochs=${2:-100}
 
 # data_dir="./data/ImageNet-Zip"
-data_dir="/opt/tiger/minist/datasets/imagenet"
+data_dir="imagenet_filtered_proposals"
 output_dir="./SoCo_output/SoCo_FPN_100ep"
 
 master_addr=${MASTER_IP}

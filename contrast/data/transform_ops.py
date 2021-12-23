@@ -342,10 +342,10 @@ class RandomCutoutInBbox(object):
             cutout_r = random.random()
             if cutout_r < self.cutout_prob:
                 x1, y1, x2, y2 = bbox[0], bbox[1], bbox[2], bbox[3]
-                x1 = x1 * view_size[0]
-                x2 = x2 * view_size[0]
-                y1 = y1 * view_size[1]
-                y2 = y2 * view_size[1]
+                x1 = int(x1 * view_size[0])
+                x2 = int(x2 * view_size[0])
+                y1 = int(y1 * view_size[1])
+                y2 = int(y2 * view_size[1])
                 bbox_w = x2 - x1 + 1
                 bbox_h = y2 - y1 + 1
                 bbox_area = bbox_w * bbox_h
@@ -354,6 +354,7 @@ class RandomCutoutInBbox(object):
 
                 w = int(round(math.sqrt(target_area)))
                 h = w
+                # print('x1: {}, x2 : {}'.format(x1, x2))
                 center_cut_x = random.randint(x1, x2)
                 center_cut_y = random.randint(y1, y2)
                 cut_x1 = max(center_cut_x - w // 2, 0)

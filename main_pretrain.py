@@ -143,7 +143,7 @@ def convert_checkpoint(args):
 
 
 def main(args):
-    train_prefix = 'train2017' if args.dataset == 'COCO' else 'train'
+    train_prefix = 'train2017' if args.dataset == 'COCO' else 'train' # train
     train_loader = get_loader(args.aug, args, prefix=train_prefix, return_coord=True)
     args.num_instances = len(train_loader.dataset)
     logger.info(f"length of training dataset: {args.num_instances}")
