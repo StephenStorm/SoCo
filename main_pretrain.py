@@ -134,6 +134,7 @@ def save_checkpoint(args, epoch, model, optimizer, scheduler, sampler=None):
 def convert_checkpoint(args):
     '''
     将最新checkpoint ： current， 转变为各种模型
+    最终保存使用的是encoder，而不是encoder_k, that's to say online network is userd
     '''
     file_name = os.path.join(args.output_dir, 'current.pth')
     output_file_name_C4 = os.path.join(args.output_dir, 'current_detectron2_C4.pkl')
