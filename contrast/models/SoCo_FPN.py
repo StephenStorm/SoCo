@@ -36,7 +36,7 @@ class SoCo_FPN(BaseModel):
         """
         super(SoCo_FPN, self).__init__(base_encoder, args)
 
-        self.contrast_num_negative = args.contrast_num_negative
+        self.contrast_num_negative = args.contrast_num_negative     # 65536. 好像是没用啊？！
         self.contrast_momentum = args.contrast_momentum
         self.contrast_temperature = args.contrast_temperature
         self.output_size = args.output_size
@@ -166,7 +166,7 @@ class SoCo_FPN(BaseModel):
 
         preds_1_12 = torch.cat(preds_1_12, dim=1)  # N, P * L, C
 
-
+        # 只是boxs不同， bboxs1_12 -> bboxs1_13
         preds_1_13 = [None] * len(fpn_feats_1)
         for i, feat_1_13 in enumerate(fpn_feats_1):
             feat_roi_1_13 = self.roi_align_feature_map(feat_1_13, bboxs1_13)

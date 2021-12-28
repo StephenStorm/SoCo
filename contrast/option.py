@@ -38,7 +38,7 @@ def parse_option(stage='pre_train'):
     parser.add_argument('--image3_size', type=int, default=112, help='image crop size')
     parser.add_argument('--image4_size', type=int, default=112, help='image crop size')
 
-    parser.add_argument('--num_workers', type=int, default=4, help='num of workers per GPU to use')
+    parser.add_argument('--num_workers', type=int, default=8, help='num of workers per GPU to use')
     # sliding window sampler
     parser.add_argument('--swin_', type=int, default=131072, help='window size in sliding window sampler')
     parser.add_argument('--window_stride', type=int, default=16384, help='window stride in sliding window sampler')

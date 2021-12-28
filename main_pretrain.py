@@ -60,8 +60,8 @@ def set_random_seed(seed, deterministic=False):
 
 
 def build_model(args):
-    encoder = resnet.__dict__[args.arch]
-    model = models.__dict__[args.model](encoder, args).cuda()
+    encoder = resnet.__dict__[args.arch] # args.arch = resnet50
+    model = models.__dict__[args.model](encoder, args).cuda()   # args.model = SoCo_FPN
 
     if args.optimizer == 'sgd':
         optimizer = torch.optim.SGD(model.parameters(),
@@ -132,6 +132,9 @@ def save_checkpoint(args, epoch, model, optimizer, scheduler, sampler=None):
 
 
 def convert_checkpoint(args):
+    '''
+    将最新checkpoint ： current， 转变为各种模型
+    '''
     file_name = os.path.join(args.output_dir, 'current.pth')
     output_file_name_C4 = os.path.join(args.output_dir, 'current_detectron2_C4.pkl')
     output_file_name_Head = os.path.join(args.output_dir, 'current_detectron2_Head.pkl')
@@ -145,7 +148,7 @@ def convert_checkpoint(args):
 def main(args):
     train_prefix = 'train2017' if args.dataset == 'COCO' else 'train' # train
     train_loader = get_loader(args.aug, args, prefix=train_prefix, return_coord=True)
-    args.num_instances = len(train_loader.dataset)
+    args.num_instances = len(train_loader.dataset)  #instance num of datasets 
     logger.info(f"length of training dataset: {args.num_instances}")
 
     model, optimizer = build_model(args)
@@ -175,7 +178,7 @@ def main(args):
     else:
         summary_writer = None
 
-    if args.use_sliding_window_sampler:
+    if args.use_sliding_window_sampler: # False
         args.epochs = math.ceil(args.epochs * len(train_loader.dataset) / args.window_size)
     for epoch in range(args.start_epoch, args.epochs + 1):
         if isinstance(train_loader.sampler, DistributedSampler):
