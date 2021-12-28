@@ -6,15 +6,19 @@ set -x
 warmup=${1:-10}
 epochs=${2:-400}
 
-data_dir="./data/ImageNet-Zip"
+data_dir="imagenet_filtered_proposals"
 output_dir="./SoCo_output/SoCo_C4_400ep"
 
 master_addr=${MASTER_IP}
 master_port=28652
 
+OMPI_COMM_WORLD_SIZE=1
+OMPI_COMM_WORLD_RANK=0
+master_addr="0.0.0.0"
+
 python -m torch.distributed.launch --nproc_per_node=8 \
     --nnodes ${OMPI_COMM_WORLD_SIZE} --node_rank ${OMPI_COMM_WORLD_RANK} --master_addr ${master_addr} --master_port ${master_port} \
-    SoCo/main_pretrain.py \
+    main_pretrain.py \
     --data_dir ${data_dir} \
     --crop 0.6 \
     --base_lr 1.0 \
