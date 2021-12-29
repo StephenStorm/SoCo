@@ -38,7 +38,7 @@ class SoCo_FPN(BaseModel):
 
         self.contrast_num_negative = args.contrast_num_negative     # 65536. 好像是没用啊？！
         self.contrast_momentum = args.contrast_momentum
-        self.contrast_temperature = args.contrast_temperature
+        self.contrast_temperature = args.contrast_temperature       # useless
         self.output_size = args.output_size
         self.aligned = args.aligned
 

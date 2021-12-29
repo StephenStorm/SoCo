@@ -16,6 +16,10 @@ proposal_names = sorted(os.listdir(proposal_dir))
 done_class_names = [name+'\n' for name in class_names if name in proposal_names and len(os.listdir(os.path.join(image_dir, name))) == len(os.listdir(os.path.join(proposal_dir, name)))]
 
 # print(done_class_names)
-with open(class_name_file, 'w') as wf:
-    wf.writelines(done_class_names)
-print(len(done_class_names))
+# with open(class_name_file, 'w') as wf:
+#     wf.writelines(done_class_names)
+print(len(done_class_names)) # 276 cls
+count = 0
+for name in done_class_names:
+    count = count + len(os.listdir(os.path.join(image_dir, name.strip())))
+print('img nums : {}'.format(count))    # 353232
