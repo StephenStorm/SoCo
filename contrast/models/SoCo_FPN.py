@@ -36,7 +36,7 @@ class SoCo_FPN(BaseModel):
         """
         super(SoCo_FPN, self).__init__(base_encoder, args)
 
-        self.contrast_num_negative = args.contrast_num_negative     # 65536. 好像是没用啊？！
+        self.contrast_num_negative = args.contrast_num_negative     # 65536. 好像是没用啊？！ useless
         self.contrast_momentum = args.contrast_momentum
         self.contrast_temperature = args.contrast_temperature       # useless
         self.output_size = args.output_size
@@ -62,7 +62,7 @@ class SoCo_FPN(BaseModel):
         self.head_k = FastRCNNConvFCHead()
         self.projector_k = Proj_Head(in_dim=1024)  # head channel
 
-        self.roi_avg_pool = nn.AvgPool2d(self.output_size, stride=1)
+        self.roi_avg_pool = nn.AvgPool2d(self.output_size, stride=1)    # useless
 
         for param_q, param_k in zip(self.encoder.parameters(), self.encoder_k.parameters()):
             param_k.data.copy_(param_q.data)  # initialize
@@ -192,7 +192,7 @@ class SoCo_FPN(BaseModel):
             pred_2 = self.predictor(proj_2)
             pred_2 = F.normalize(pred_2, dim=1)
             pred_2 = pred_2.reshape((N, L, -1))  # N, L, C
-            preds_2[i] = pred_2
+            preds_2[i] = pred_2，
 
         preds_2 = torch.cat(preds_2, dim=1)  # N, P * L, C
 

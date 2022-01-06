@@ -15,13 +15,13 @@ from mmcv.cnn import ConvModule, xavier_init
 
 class FPN(nn.Module):
     def __init__(self,
-                 in_channels,
-                 out_channels,
-                 num_outs,
-                 start_level=0,
+                 in_channels,                       # default=[256, 512, 1024, 2048]
+                 out_channels,                      # 256
+                 num_outs,                          # 4
+                 start_level=0,                     # 0
                  end_level=-1,
-                 add_extra_convs=False,
-                 extra_convs_on_inputs=True,
+                 add_extra_convs=False,             # 0
+                 extra_convs_on_inputs=True,        # 0
                  relu_before_extra_convs=False,
                  no_norm_on_lateral=False,
                  conv_cfg=None,
@@ -34,14 +34,14 @@ class FPN(nn.Module):
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.num_ins = len(in_channels)
-        self.num_outs = num_outs
+        self.num_outs = num_outs # 4
         self.relu_before_extra_convs = relu_before_extra_convs
         self.no_norm_on_lateral = no_norm_on_lateral
         self.fp16_enabled = False
         self.upsample_cfg = upsample_cfg.copy()
 
         if end_level == -1:
-            self.backbone_end_level = self.num_ins
+            self.backbone_end_level = self.num_ins # 4
             assert num_outs >= self.num_ins - start_level
         else:
             # if end_level < inputs, no extra level is allowed
@@ -50,7 +50,7 @@ class FPN(nn.Module):
             assert num_outs == end_level - start_level
         self.start_level = start_level
         self.end_level = end_level
-        self.add_extra_convs = add_extra_convs
+        self.add_extra_convs = add_extra_convs # False
         assert isinstance(add_extra_convs, (str, bool))
         if isinstance(add_extra_convs, str):
             # Extra_convs_source choices: 'on_input', 'on_lateral', 'on_output'
@@ -122,7 +122,7 @@ class FPN(nn.Module):
         """Forward function."""
         assert len(inputs) == len(self.in_channels)
 
-        # build laterals
+        # build laterals.  对齐多阶段通道数。
         laterals = [
             lateral_conv(inputs[i + self.start_level])
             for i, lateral_conv in enumerate(self.lateral_convs)
